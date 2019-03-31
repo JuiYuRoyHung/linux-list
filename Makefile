@@ -60,6 +60,17 @@ $(TESTS): %: %.o
 	$(VECHO) "  LD\t$@\n"
 	$(Q)$(CC) -o $@ $^ $(LDFLAGS)
 
+SORTS = \
+	merge-sort
+
+SORTS := $(addprefix examples/,$(SORTS))
+
+sort: $(SORTS)
+	@./$<
+
+$(SORTS): %: %.c
+	$(CC) -o $@ -I./include $(LDFLAGS) $<
+
 clean:
 	$(VECHO) "  Cleaning...\n"
 	$(Q)$(RM) $(TESTS) $(TESTS_OK) $(TESTS:=.o) $(deps)
