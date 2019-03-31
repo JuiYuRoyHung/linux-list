@@ -66,7 +66,11 @@ SORTS = \
 SORTS := $(addprefix examples/,$(SORTS))
 
 sort: $(SORTS)
-	@./$<
+	@./$< 10000
+	@./$< 20000
+	@./$< 30000
+	@./$< 40000
+	@./$< 50000
 
 $(SORTS): %: %.c
 	$(CC) -o $@ -I./include $(LDFLAGS) $<

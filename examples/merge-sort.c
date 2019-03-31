@@ -5,7 +5,6 @@
 #include "common.h"
 #include "common_time_analysis.h"
 
-static uint16_t values[256];
 
 /**
  * split_half - split linked list into half
@@ -100,20 +99,26 @@ static void list_mergesort(struct list_head *head)
     merge_compare(head, &first_half, &second_half);
 }
 
-int main(void)
+int main(int argc, const char *argv[])
 {
+    if (argc < 2) {
+        printf("Usage: %s input_size\n", argv[0]);
+        return -1;
+    }
+
     struct list_head testlist;
     struct listitem *item, *is = NULL;
-    size_t i;
+    size_t i, array_size = strtol(argv[1], NULL, 10);
+    uint16_t *values = (uint16_t *) malloc(sizeof(uint16_t) * array_size);
     struct timespec start, end;
 
-    random_shuffle_array(values, (uint16_t) ARRAY_SIZE(values));
+    random_shuffle_array(values, (uint16_t) array_size);
 
     INIT_LIST_HEAD(&testlist);
 
     assert(list_empty(&testlist));
 
-    for (i = 0; i < ARRAY_SIZE(values); i++) {
+    for (i = 0; i < array_size; i++) {
         item = (struct listitem *) malloc(sizeof(*item));
         assert(item);
         item->i = values[i];
@@ -122,12 +127,12 @@ int main(void)
 
     assert(!list_empty(&testlist));
 
-    qsort(values, ARRAY_SIZE(values), sizeof(values[0]), cmpint);
+    qsort(values, array_size, sizeof(values[0]), cmpint);
 
     clock_gettime(CLOCK_MONOTONIC, &start);
     list_mergesort(&testlist);
     clock_gettime(CLOCK_MONOTONIC, &end);
-    printf("%lf\n", time_difference(&start, &end));
+    printf("%zu %lf\n", array_size, time_difference(&start, &end));
 
     i = 0;
     list_for_each_entry_safe (item, is, &testlist, list) {
@@ -137,7 +142,8 @@ int main(void)
         i++;
     }
 
-    assert(i == ARRAY_SIZE(values));
+    free(values);
+    assert(i == array_size);
     assert(list_empty(&testlist));
 
     return 0;
