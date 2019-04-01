@@ -60,16 +60,40 @@ $(TESTS): %: %.o
 	$(VECHO) "  LD\t$@\n"
 	$(Q)$(CC) -o $@ $^ $(LDFLAGS)
 
-SORTS = \
+MERGESORT = \
 	merge-sort \
+
+QUICKSORT = \
 	quick-sort \
+
+INSERTSORT = \
 	insert-sort \
 
-SORTS := $(addprefix examples/,$(SORTS))
+MERGESORT := $(addprefix examples/,$(MERGESORT))
+QUICKSORT := $(addprefix examples/,$(QUICKSORT))
+INSERTSORT := $(addprefix examples/,$(INSERTSORT))
 
-sort: $(SORTS)
-	
 
+merge-sort: $(MERGESORT)
+	@$< 10000
+	@$< 20000
+	@$< 30000
+	@$< 40000
+	@$< 50000
+
+quick-sort: $(QUICKSORT)
+	@$< 10000
+	@$< 20000
+	@$< 30000
+	@$< 40000
+	@$< 50000
+
+insert-sort: $(INSERTSORT)
+	@$< 10000
+	@$< 20000
+	@$< 30000
+	@$< 40000
+	@$< 50000
 
 $(SORTS): %: %.c
 	$(CC) -o $@ -I./include $(LDFLAGS) $<
