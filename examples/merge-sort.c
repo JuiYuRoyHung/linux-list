@@ -132,7 +132,7 @@ int main(int argc, const char *argv[])
     clock_gettime(CLOCK_MONOTONIC, &start);
     list_mergesort(&testlist);
     clock_gettime(CLOCK_MONOTONIC, &end);
-    printf("%zu %lf\n", array_size, time_difference(&start, &end));
+    printf("merge %zu %lf\n", array_size, time_difference(&start, &end));
 
     i = 0;
     list_for_each_entry_safe (item, is, &testlist, list) {
