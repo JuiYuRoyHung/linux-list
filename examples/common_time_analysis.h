@@ -1,3 +1,6 @@
+#ifndef __USE_POSIX199309
+#define __USE_POSIX199309
+#endif
 #include <stdio.h>
 #include <time.h>
 
